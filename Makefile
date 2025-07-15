@@ -1,94 +1,45 @@
-# Colors
-RESET			= "\033[0m"
-BLACK    		= "\033[30m"    # Black
-RED      		= "\033[31m"    # Red
-GREEN    		= "\033[32m"    # Green
-YELLOW   		= "\033[33m"    # Yellow
-BLUE     		= "\033[34m"    # Blue
-MAGENTA  		= "\033[35m"    # Magenta
-CYAN     		= "\033[36m"    # Cyan
-WHITE    		= "\033[37m"    # White
+NAME = fractol
+CC = cc
+CFLAGS = -Wall -Wextra -Werror -I/usr/include -Imlx_linux -O3
+MLX_PATH = minilibx-linux
+LIBRARY = -L $(MLX_PATH) -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz
+MLX = $(MLX_PATH)/libmlx.a
+SRCS = main.c \
+	hooks.c \
+	fractals.c \
+	fractal_utils.c \
+	pixel_utils.c \
+	program_utils.c \
+	arg_utils.c
 
-# Compiler
-NAME			= fractol
-CC				= cc
-CFLAGS			= -Wall -Wextra -Werror
-MAKE			= make -sC
-MKDIR			= mkdir -p
-RM				= rm -rf
+SRCSB = main_bonus.c \
+	hooks_bonus.c \
+	fractals_bonus.c \
+	fractal_utils_bonus.c \
+	pixel_utils_bonus.c \
+	program_utils_bonus.c \
+	arg_utils_bonus.c
 
-# Libs
-LIBFT_DIR		= libft
-LIBFT			= $(LIBFT_DIR)/libft.a
-LINKER  	    = -lft -L $(LIBFT_DIR)
+OBJS = $(SRCS:.c=.o)
+OBJSB = $(SRCSB:.c=.o)
 
-# Includes
-INCLUDES_DIR 	= # includes
-INCLUDES_FLAG 	= -I$(INCLUDES_DIR) \
-				  -I$(LIBFT_DIR) \
+all: $(MLX) $(NAME)
 
-INCLUDES		= $(wildcard $(INCLUDES_DIR)/*.h) \
-				  $(LIBFT_DIR)/libft.h \
+$(NAME): $(OBJS)
+	@$(CC) $(CFLAGS) $(OBJS) $(LIBRARY) -o $(NAME)
 
-# Sources
-SRCS_DIR		= # srcs/
-SRC_FILES		= main.c \
-				  utils.c \
-				  utils2.c \
-				#   events.c \
-				#   render.c \
-			 	#   fractals.c \
-				#   mandelbox.c \
-				#   make_engine.c \
+$(MLX):
+	@make -s -C $(MLX_PATH) -j16 2> /dev/null
 
-SRCS			= $(addprefix $(SRCS_DIR), $(SRC_FILES))
+bonus: $(MLX) $(OBJSB)
+	@$(CC) $(CFLAGS) $(OBJSB) $(LIBRARY) -o $(NAME)
 
-# Objects
-OBJS_DIR		= objs/
-OBJ_FILES		= $(SRC_FILES:.c=.o)
-OBJS			= $(addprefix $(OBJS_DIR), $(OBJ_FILES))
+clean:
+	@$(RM) $(OBJS) $(OBJSB)
+	@make -C $(MLX_PATH) clean
 
-# Platform-dependent compilation
-MLX_DIR			= minilibx-linux
-MLX				= $(MLX_DIR)/libmlx.a
-LINKER			+= -lmlx -lm -lz -lXext -lX11 -L $(MLX_DIR)
-INCLUDES_FLAG	+= -I$(MLX_DIR)
-
-
-
-all : $(LIBFT) $(MLX) $(OBJS_DIR) $(NAME)
-# all : $(MLX) $(OBJS_DIR) $(NAME)
-
-$(LIBFT) :
-	@echo $(CYAN) " - Making libft..." $(RESET)
-	@$(MAKE) $(LIBFT_DIR)
-	@echo $(YELLOW) " - Made libft!" $(RESET)
-
-$(MLX) :
-	@echo $(CYAN) " - Making mlx..." $(RESET)
-	@$(MAKE) $(MLX_DIR)
-	@echo $(YELLOW) " - Made mlx!" $(RESET)
-
-$(OBJS_DIR) :
-	@$(MKDIR) $(OBJS_DIR)
-
-$(NAME) : $(OBJS) Makefile
-	@echo $(GREEN) " - Compiling $(NAME)..." $(RESET)
-	@$(CC) $(CFLAGS) $(OBJS) $(LINKER) -o $(NAME)
-	@echo $(YELLOW) " - Compiling FINISHED" $(RESET)
-
-$(OBJS_DIR)%.o : $(SRCS_DIR)%.c $(INCLUDES)
-	@$(CC) $(CFLAGS) $(INCLUDES_FLAG) -c $< -o $@
-
-clean :
-	@$(RM) $(OBJS_DIR)
-	@echo $(RED) " - Cleaned!" $(RESET)
-
-fclean : clean
+fclean: clean
 	@$(RM) $(NAME)
-	@$(MAKE) $(MLX_DIR) clean
-	@$(MAKE) $(LIBFT_DIR) fclean
-	@echo $(RED) " - Full Cleaned!" $(RESET)
 
 re: fclean all
 

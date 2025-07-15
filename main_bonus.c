@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   main_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kbatur <kbatur@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/29 17:54:13 by kbatur            #+#    #+#             */
-/*   Updated: 2025/06/29 17:54:14 by kbatur           ###   ########.fr       */
+/*   Created: 2025/06/29 17:55:11 by kbatur            #+#    #+#             */
+/*   Updated: 2025/06/29 17:55:12 by kbatur           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fractol.h"
+#include "fractol_bonus.h"
 
 static void	check_arguments(t_program *program, int argc, char **argv)
 {
@@ -18,6 +18,8 @@ static void	check_arguments(t_program *program, int argc, char **argv)
 	{
 		if (ft_strcmp(argv[1], MANDELBROT_NAME) == 0 && argc == 2)
 			program->fractal.type = MANDELBROT;
+		else if (ft_strcmp(argv[1], BURNING_SHIP_NAME) == 0 && argc == 2)
+			program->fractal.type = BURNING_SHIP;
 		else if (ft_strcmp(argv[1], JULIA_NAME) == 0)
 		{
 			if (!set_julia(program, argc, argv))
