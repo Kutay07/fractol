@@ -22,7 +22,7 @@
 - [Kullanım](#-kullanım)
 - [Kontroller](#-kontroller)
 - [Bonus Özellikler](#-bonus-özellikler)
-- [Matematik Arkası](#-matematik-arkası)
+- [Matematik](#-matematik-arkası)
 - [Galeri](#-galeri)
 - [Teknik Detaylar](#-teknik-detaylar)
 
@@ -246,14 +246,6 @@ fractol/
 #define SIZE 900           // Daha büyük pencere
 #define ITERATION 500      // Daha yüksek detay
 ```
-
-## 🚀 Gelecek Planları
-
-- [ ] **Multi-threading**: Daha hızlı rendering
-- [ ] **GPU Acceleration**: CUDA/OpenCL desteği
-- [ ] **Animation**: Parametre animasyonları
-- [ ] **Export**: PNG/JPG kaydetme
-- [ ] **More Fractals**: Newton, Tricorn, vs.
 
 ## 📝 Lisans
 
